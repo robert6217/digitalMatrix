@@ -1,20 +1,26 @@
 #include <ncurses.h>
-#include <stdio.h>
-#include <string.h>
+#include <unistd.h>
 
-int main(int argc, const char* argv[]) {
-    // printf("hello workd\n");
+#define DELAY 30000
+
+int main(int argc, char *argv[]) {
+    int x = 0, direction = 1;
+
     initscr();
-    raw();
     noecho();
-    curs_set(0);
+    curs_set(FALSE);
 
-    char* c = "Hello, World!";
+    while (1) {
+        clear();
+        mvprintw(LINES / 2, x, "o");
+        refresh();
 
-    mvprintw(LINES / 2, (COLS - strlen(c)) / 2, c);
-    refresh();
+        sleep(1);
 
-    getch();
+        if (x >= COLS || x < 0) {
+            direction *= -1;
+        }
+        x += direction;
+    }
     endwin();
-    return 0;
 }

@@ -6,4 +6,8 @@ tncurses: tncurses.c
 
 install:
 	ln -s $(PWD)tncurses $(LN)tncurses
+
+clean:
+	rm $(PWD)tncurses
+	rm $(LN)tncurses
 	
