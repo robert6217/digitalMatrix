@@ -1,26 +1,38 @@
 #include <ncurses.h>
 #include <unistd.h>
 
-#define DELAY 30000
+#define DELAY 10000
 
 int main(int argc, char *argv[]) {
-    int x = 0, direction = 1;
-
+    int x = 1, x_direction = 1;
+    int y = 0, y_direction = 1;
+    int r = 0;
     initscr();
     noecho();
     curs_set(FALSE);
 
     while (1) {
         clear();
-        mvprintw(LINES / 2, x, "o");
+        mvprintw(y, x, "o");
         refresh();
 
-        sleep(1);
-
-        if (x >= COLS || x < 0) {
-            direction *= -1;
+        usleep(DELAY);
+        if (x == 0 && y == 0) {
+            r = 1;
+        } else if (x == COLS && y == LINES) {
+            r = 1;
+        } else {
+            r == 0;
         }
-        x += direction;
+        if (x == COLS || x < 0) {
+            if (r == 1) {
+                y_direction *= -1;
+            }
+            y += y_direction;
+            x_direction *= -1;
+        }
+
+        x += x_direction;
     }
     endwin();
 }
