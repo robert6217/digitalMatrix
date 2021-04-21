@@ -1,12 +1,12 @@
 #include <ncurses.h>
 #include <unistd.h>
 
-#define DELAY 10000
+#define DELAY 5000
 
 int main(int argc, char *argv[]) {
     int x = 1, x_direction = 1;
-    int y = 0, y_direction = 1;
-    int r = 0;
+    int y = 0, y_direction = -1;
+
     initscr();
     noecho();
     curs_set(FALSE);
@@ -17,15 +17,8 @@ int main(int argc, char *argv[]) {
         refresh();
 
         usleep(DELAY);
-        if (x == 0 && y == 0) {
-            r = 1;
-        } else if (x == COLS && y == LINES) {
-            r = 1;
-        } else {
-            r == 0;
-        }
-        if (x == COLS || x < 0) {
-            if (r == 1) {
+        if (x == COLS || x == 0) {
+            if ((y == LINES-1 && x == COLS) || (y == 0 && x == COLS)) {
                 y_direction *= -1;
             }
             y += y_direction;
