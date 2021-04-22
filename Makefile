@@ -1,6 +1,10 @@
 PWD := ~/C/ccDigitalMatrix/
-LN := ~/exec/
+LN := ~/bin/
 CC := clang
+
+rain.out: rain.c
+	$(CC) -g -o $@ $< -lncurses
+
 tncurses.out: tncurses.c
 	$(CC) -g -o $@ $< -lncurses
 
