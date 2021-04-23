@@ -2,22 +2,32 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-#define DELAY 30000
+
 int main() {
     time_t t;
-    int x = 1, x_direction = 1;
-    int y = 0, y_direction = -1;
+    int x = rand() % 10;
+    int i = 0;
     char buffer[2];
     initscr();
     noecho();
     curs_set(FALSE);
     srand((unsigned)time(&t));
+
     while (1) {
+        usleep(100000);
+
         clear();
-        sprintf(buffer, "%d", rand() % 10);
-        mvprintw(LINES / 2, COLS / 2, buffer);
+        if (i == LINES) {
+            x = rand() % COLS;
+            i = 0;
+        }
+        int n = 0;
+        for (n = 0; n < 10; n++) {
+            sprintf(buffer, "%d", rand() % 2);
+            mvprintw(i + n, x, buffer);
+        }
         refresh();
-        usleep(DELAY);
+        i++;
     }
     return 0;
 }
