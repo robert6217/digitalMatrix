@@ -2,16 +2,26 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#define RATE 50
+static unsigned int numOfRain;
+static unsigned int maxSign = 126, minSign = 33;
+
+
+int initRain() {
+    time_t t;
+    srand((unsigned)time(&t));
+    unsigned int screenArea = LINES * COLS;
+    numOfRain = screenArea / RATE;
+    // pthread;
+    return 0;
+}
 
 int main() {
-    time_t t;
-    int x = rand() % 10;
-    int i = 0;
-    char buffer[2];
+    initRain();
     initscr();
     noecho();
     curs_set(FALSE);
-    srand((unsigned)time(&t));
+    int x = rand() % 10, i = 0;
 
     while (1) {
         usleep(100000);
@@ -23,8 +33,7 @@ int main() {
         }
         int n = 0;
         for (n = 0; n < 10; n++) {
-            sprintf(buffer, "%d", rand() % 2);
-            mvprintw(i + n, x, buffer);
+            mvprintw(i + n, x, rand() % (maxSign - minSign) + minSign);
         }
         refresh();
         i++;
