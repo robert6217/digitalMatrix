@@ -12,6 +12,7 @@ int initRain() {
     unsigned int screenArea = LINES * COLS;
     numOfRain = screenArea / RATE;
     // pthread;
+
     return 0;
 }
 
@@ -26,9 +27,15 @@ int main() {
     start_color();
     use_default_colors();
     init_pair(3, COLOR_GREEN, -1);
+    init_pair(8, COLOR_WHITE, -1);
+
+    /*  set sleep time  */
+    struct timespec ts;
+    ts.tv_sec = 20 / 1000;
+    ts.tv_nsec = (20 % 1000) * 1000000;
 
     while (1) {
-        usleep(100000);
+        nanosleep(&ts, NULL);
 
         clear();
         if (i == LINES) {
@@ -38,9 +45,12 @@ int main() {
         int n = 0;
         for (n = 0; n < 10; n++) {
             attron(COLOR_PAIR(3));
-            mvaddch(i + n, x, rand() % (maxSign - minSign) + minSign);
+            mvaddch(i + n-1, x, rand() % (maxSign - minSign) + minSign);
             attroff(COLOR_PAIR(3));
             // mvprintw(i + n, x, rand() % (maxSign - minSign) + minSign);
+            attron(COLOR_PAIR(8));
+            mvaddch(i + n, x, rand() % (maxSign - minSign) + minSign);
+            attroff(COLOR_PAIR(8));
         }
         refresh();
         i++;
