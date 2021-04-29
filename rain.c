@@ -31,12 +31,15 @@ int main() {
 
     /*  set sleep time  */
     struct timespec ts;
-    ts.tv_sec = 20 / 1000;
+    ts.tv_sec = 200 / 1000;
     ts.tv_nsec = (20 % 1000) * 1000000;
 
     while (1) {
-        nanosleep(&ts, NULL);
-
+        // nanosleep(&ts, &ts1);
+        if (nanosleep(&ts, NULL) == -1) {
+            printf("error!\n");
+            exit(1);
+        }
         clear();
         if (i == LINES) {
             x = rand() % COLS;
