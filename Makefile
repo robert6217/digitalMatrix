@@ -5,7 +5,7 @@ CC := clang
 all: rain.out tncurses.out
 
 rain.out: rain.c
-	$(CC) -g -o $@ $< -lncurses
+	$(CC) -g -o $@ $< -lncurses -lpthread
 
 tncurses.out: tncurses.c
 	$(CC) -g -o $@ $< -lncurses
