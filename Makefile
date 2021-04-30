@@ -1,14 +1,18 @@
 PWD := ~/C/ccDigitalMatrix/
 LN := ~/bin/
 CC := clang
+CFLAG := -g -Wall -o
+LDFLAG := -lncurses
+
+.PHONY: all install clean
 
 all: rain.out tncurses.out
 
 rain.out: rain.c
-	$(CC) -g -o $@ $< -lncurses -lpthread
+	$(CC) $(CFLAG) $@ $< $(LDFLAG)
 
 tncurses.out: tncurses.c
-	$(CC) -g -o $@ $< -lncurses
+	$(CC) $(CFLAG) $@ $< $(LDFLAG)
 
 install:
 	ln -s $(PWD)tncurses.out $(LN)tncurses
