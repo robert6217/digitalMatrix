@@ -29,20 +29,20 @@ void *raining() {
     Rain *i = rains;
     for (; i < rains + numOfRain; i++) {
         int length = 0;
-        for (; length < 10; length++) {
+        for (; length < i->length; length++) {
             attron(COLOR_PAIR(3));
-            mvaddch(i->row - 1, i->col, rand() % (maxSign - minSign) + minSign);
+            mvaddch(i->row - length, i->col, rand() % (maxSign - minSign) + minSign);
             attroff(COLOR_PAIR(3));
             attron(COLOR_PAIR(8));
             mvaddch(i->row, i->col, rand() % (maxSign - minSign) + minSign);
             attroff(COLOR_PAIR(8));
         }
-        i->row++;
 
         if (i->row == LINES) {
-            // mvaddch((i)->row - (i)->length - 2, (i)->col, ' ');
+            mvaddch((i)->row - length, (i)->col, ' ');
             setRainProps(i);
         }
+        i->row++;
     }
 
     return 0;
@@ -69,7 +69,7 @@ int initRains() {
 static int setRainProps(Rain *rainprops) {
     rainprops->col = rand() % COLS;
     rainprops->row = rand() % LINES;
-    rainprops->length = rand() % LINES;
+    rainprops->length = rand() % 3 + 3;
     rainprops->frames_per_row = 0;
     return 0;
 }
