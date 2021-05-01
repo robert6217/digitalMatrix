@@ -11,11 +11,13 @@ int initRains();
 void freerain();
 void *raining(void *arg);
 typedef struct rain {
-    unsigned short length, col;
-    short row;
+    unsigned short col;
+    unsigned short length;
+    unsigned short row;
     unsigned short frames_per_row;
 } Rain;
 static Rain *rains;
+static int setRainProps(Rain *rainprops);
 
 void freerain() {
     free(rains);
@@ -24,19 +26,33 @@ void freerain() {
 }
 
 void *raining(void *arg) {
-    int *input = (int *)arg;
-    int i = input[0];
-    int x = input[1];
-    int n = 0;
-    for (n = 0; n < 10; n++) {
-        attron(COLOR_PAIR(3));
-        mvaddch(i + n - 1, x, rand() % (maxSign - minSign) + minSign);
-        attroff(COLOR_PAIR(3));
-        // mvprintw(i + n, x, rand() % (maxSign - minSign) + minSign);
-        attron(COLOR_PAIR(8));
-        mvaddch(i + n, x, rand() % (maxSign - minSign) + minSign);
-        attroff(COLOR_PAIR(8));
+    // int *input = (int *)arg;
+    // // int i = input[0];
+    // int x = input[1];
+    // int n = 0;
+    Rain *i = rains;
+    for (; i < rains + numOfRain; i++) {
+        
+        unsigned short length = 0;
+        for (; length < i->length; length++) {
+            attron(COLOR_PAIR(3));
+            mvaddch(i->row - 1, i->col, rand() % (maxSign - minSign) + minSign);
+            attroff(COLOR_PAIR(3));
+            // mvprintw(i + n, x, rand() % (maxSign - minSign) + minSign);
+            attron(COLOR_PAIR(8));
+            mvaddch(i->row, i->col, rand() % (maxSign - minSign) + minSign);
+            attroff(COLOR_PAIR(8));
+        }
+        i->row++;
+        //check if droplet is entirely offscreen
+        if ((i)->row > LINES + (i)->length) {
+            mvaddch((i)->row - (i)->length - 2, (i)->col, ' ');
+            setRainProps(i);
+        }
     }
+    // for (n = 0; n < 10; n++) {
+
+    // }
 
     return 0;
 }
@@ -51,9 +67,22 @@ int initRains() {
         perror("Out of memory\n");
         exit(1);
     }
-
+    unsigned int i = 0;
+    for (; i < numOfRain; i++) {
+        setRainProps(rains + i);
+        // (rains + i)->row = rand() % LINES;
+    }
     return 0;
 }
+
+static int setRainProps(Rain *rainprops) {
+    rainprops->col = rand() % COLS;
+    rainprops->row = rand() % LINES;
+    rainprops->length = (rand() % (LINES - LINES / 2)) + LINES/3;
+    rainprops->frames_per_row = 0;
+    return 0;
+}
+
 int initColor() {
     start_color();
     use_default_colors();
